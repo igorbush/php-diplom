@@ -17,12 +17,12 @@
 	</div>
 	<div class="uk-container uk-background-default uk-padding-small">
 		<h3 class="uk-placeholder uk-text-center">Зайти в панель администратора</h3>
-		<?php if(isset($_POST['checklogin'])): ?>
+		{% if checklogin %}
 			<div class="uk-alert-primary uk-width-1-3 uk-margin-auto" uk-alert>
 		   		<a class="uk-alert-close" uk-close></a>
-		    	<p class="uk-padding-small"><?=$errors; ?></p>
+		    	<p class="uk-padding-small">{{ errors }}</p>
 			</div>
-		<?php endif; ?>
+		{% endif %}
 		<form action="/login/check" method="POST" class="uk-form uk-margin-auto uk-text-center">
 			<div class="uk-margin uk-text-center">
 				<div class="uk-inline uk-margin-auto uk-width-1-3">

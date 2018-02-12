@@ -3,16 +3,20 @@ class MainController
 {
 
 	public $model = null;
-	public function __construct($db)
+	public function __construct($db, $twig)
 	{
 		include_once 'models/main.php';
 		$this->model = new Main($db);
+		$this->twig = $twig;
 	}
 
 	public function actionIndex() 
 	{
 		$categories = $this->model->getCategories();
-		$questions = $this->model->getQuestionsByCat($category['category']);
+		foreach($categories as $category)
+		{
+			$questions = $this->model->getQuestionsByCat($category['category']);
+		}
 		if (isset($_POST['insertQuestion']) && (empty($_POST['question']) || empty($_POST['author']) || empty($_POST['email']) || empty($_POST['category_id']))) 
 		{
 			$alert = 'Не все поля введены';
@@ -21,8 +25,8 @@ class MainController
 		{
 			$alert = 'Заполните форму, что бы задать вопрос';
 		}
-		
-		include_once('views/main.php');
+		$template = $this->twig->loadTemplate('main.php');
+		echo $template->render(['categories'=>$categories, 'questions'=>$questions, 'session_user'=>$_SESSION['user'],'alert'=>$alert]);
 	}
 
 	public function actionAdd() 

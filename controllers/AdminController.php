@@ -4,10 +4,11 @@ class AdminController
 {
 
 	public $model = null;
-	public function __construct($db)
+	public function __construct($db, $twig)
 	{
 		include_once 'models/admin.php';
 		$this->model = new Admin($db);
+		$this->twig = $twig;
 	}
 
 	public function actionLogin() 
@@ -25,7 +26,8 @@ class AdminController
 		{
 			$errors = 'Не все поля введены';
 		}
-		require_once 'views/login.php';
+		$template = $this->twig->loadTemplate('login.php');
+		echo $template->render(['errors'=>$errors, 'checklogin'=>$_POST['checklogin']]);
 
 	}
 

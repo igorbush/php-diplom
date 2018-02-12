@@ -3,10 +3,11 @@ class QuestionController
 {
 
 	public $model = null;
-	public function __construct($db)
+	public function __construct($db, $twig)
 	{
 		include_once 'models/question.php';
 		$this->model = new Question($db);
+		$this->twig = $twig;
 	}
 
 	public function actionGetQuestion($id) 
@@ -18,7 +19,8 @@ class QuestionController
 			$answers = $count['answers'];
 		}
 		$question = $this->model->get($id);
-		require_once 'views/adminQuestion.php';
+		$template = $this->twig->loadTemplate('adminQuestion.php');
+		echo $template->render(['error'=>$_GET['error'], 'questions'=>$question, 'session_user'=>$_SESSION['user'], 'fullquestions'=>$fullquestions, 'answers'=>$answers]);
 	}
 	
 	public function actionUpdateQuestion() 

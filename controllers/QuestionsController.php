@@ -3,10 +3,11 @@ class QuestionsController
 {
 
 	public $model = null;
-	public function __construct($db)
+	public function __construct($db, $twig)
 	{
 		include_once 'models/questions.php';
 		$this->model = new Questions($db);
+		$this->twig = $twig;
 	}
 
 	public function actionGetQuestions() 
@@ -52,7 +53,8 @@ class QuestionsController
 		{
 		$questions = $this->model->getAll();
 		}
-		require_once 'views/adminQuestions.php';
+		$template = $this->twig->loadTemplate('adminQuestions.php');
+		echo $template->render(['categories'=>$categories, 'questions'=>$questions, 'session_user'=>$_SESSION['user'], 'fullquestions'=>$fullquestions, 'answers'=>$answers]);
 	}
 
 	public function actionVisibleQuestion($id) 

@@ -4,10 +4,11 @@ class UsersController
 {
 
 	public $model = null;
-	public function __construct($db)
+	public function __construct($db, $twig)
 	{
 		include_once 'models/users.php';
 		$this->model = new Users($db);
+		$this->twig = $twig;
 	}
 
 	public function actionUsers() 
@@ -19,7 +20,8 @@ class UsersController
 			$answers = $count['answers'];
 		}
 		$admins = $this->model->getAll();
-		require_once 'views/adminUsers.php';
+		$template = $this->twig->loadTemplate('adminUsers.php');
+		echo $template->render(['session_user'=>$_SESSION['user'], 'fullquestions'=>$fullquestions, 'answers'=>$answers, 'error'=>$_GET['error'], 'admins'=>$admins]);
 	}
 
 	public function actionAddUser() 

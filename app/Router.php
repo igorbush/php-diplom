@@ -18,7 +18,7 @@ class Router
 		}
 	}
 
-	public function run($db) 
+	public function run($db, $twig) 
 	{
 		$uri = $this->getURI();
 		foreach ($this->routes as $uriPattern => $path) 
@@ -36,7 +36,7 @@ class Router
 				{
 					include_once($controllerFile);
 				}
-				$controllerObject = new $controllerName($db);
+				$controllerObject = new $controllerName($db, $twig);
 				$result = call_user_func_array(array($controllerObject, $actionName), $parameters);
 				if ($result != null) 
 				{

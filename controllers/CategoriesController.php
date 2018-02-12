@@ -3,10 +3,11 @@ class CategoriesController
 {
 
 	public $model = null;
-	public function __construct($db)
+	public function __construct($db, $twig)
 	{
 		include_once 'models/categories.php';
 		$this->model = new Categories($db);
+		$this->twig = $twig;
 	}
 
 	public function actionGetCategories() 
@@ -18,7 +19,8 @@ class CategoriesController
 			$answers = $count['answers'];
 		}
 		$categories = $this->model->getAll();
-		require_once 'views/adminCategories.php';
+		$template = $this->twig->loadTemplate('adminCategories.php');
+		echo $template->render(['categories'=>$categories, 'error'=>$_GET['error'], 'session_user'=>$_SESSION['user'], 'fullquestions'=>$fullquestions, 'answers'=>$answers]);
 	}
 
 	public function actionDeleteCategory($id) 
