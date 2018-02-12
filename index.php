@@ -1,6 +1,6 @@
 <?php
-	error_reporting( E_ERROR );
-	ob_start();
+// 	error_reporting( E_ERROR );
+// 	ob_start();
 	session_start();
 	define('ROOT', dirname(__FILE__));
 	require_once(ROOT.'/vendor/autoload.php');
@@ -14,7 +14,7 @@
 	$config['mysql']['user'],
 	$config['mysql']['pass']
 	);
-	require_once('/app/Router.php');
+	require_once 'app/Router.php';
 	$router = new Router();
 	$router->run($db, $twig);
 
