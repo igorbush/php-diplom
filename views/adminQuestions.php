@@ -1,4 +1,7 @@
 {% extends 'adminTemplate.php' %}
+{% block title %}
+	<title>Вопросы</title>
+{% endblock %}
 {% block child %}
 				<form method="POST" class="uk-form uk-margin-top">
 					<select name="category" class="uk-select uk-width-1-4@s">
@@ -18,7 +21,7 @@
 					<table class="uk-table uk-table-hover uk-table-middle uk-table-divider" style="width: 100%;">
 						<thead>
 						<tr>
-							<td style="width: 27.5%%;">Вопрос</td>
+							<td style="width: 27.5%;">Вопрос</td>
 							<td style="width: 17.5%;">Автор и дата</td>
 							<td style="width: 20%;">Категория</td>
 							<td style="width: 15%;">Статус</td>
@@ -33,7 +36,7 @@
 								<td style="width: 20%;">
 									<p>{{ question.category }}</p>
 									<form action="/admin/change-category" method="POST" class="uk-form uk-flex uk-flex-center">
-										<input type="hidden" name="id" value="<?= $question['id'] ?>">
+										<input type="hidden" name="id" value="{{ question.id }}">
 										<select name="category_id" class="uk-select uk-form-small">
 											{% for category in categories %}
 											<option value="{{ category.id }}">{{ category.category }}</option>

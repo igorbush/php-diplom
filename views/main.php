@@ -3,6 +3,7 @@
 	<meta charset="UTF-8">
 	<title>Главная</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="/styles/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 	<!-- UIkit CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.39/css/uikit.min.css" />
 
@@ -53,10 +54,10 @@
 		   			<a class="uk-alert-close" uk-close></a>
 		    		<p class="uk-padding-small">Добро Пожаловать! Здесь Вы найдете ответы на любые вопросы по веб-разработке. Если похожего вопроса нет, Вы можете его задать, заполнив форму в левом сайтбаре</p>
 				</div>
-				{% for category in categories %}
-					<p class="uk-text-small" id="{{ category.category }}">{{ category.category }}</p>
+				{% for key,value in questions %}
+					<p class="uk-text-small" id="{{ key }}">{{ key }}</p>
 					<ul uk-accordion>
-						{% for question in questions %}
+						{% for question in value %}
 					    <li>
 					        <a class="uk-accordion-title uk-card uk-card-small uk-card-body uk-card-default uk-card-hover" href="#">{{ question.question }}</a>
 					        <div class="uk-accordion-content">

@@ -13,8 +13,7 @@ class CategoriesController
 	public function actionGetCategories() 
 	{
 		$counts = $this->model->countQuestions();
-		foreach($counts as $count) 
-		{
+		foreach($counts as $count) {
 			$fullquestions = $count['questions'];
 			$answers = $count['answers'];
 		}
@@ -31,37 +30,27 @@ class CategoriesController
 
 	public function actionCreateCategory() 
 	{
-		if(isset($_POST['create'])) 
-		{
-			if(!empty($_POST['category']))
-			{
+		if(isset($_POST['create'])) {
+			if(!empty($_POST['category'])) {
 				$name = trim(strip_tags($_POST['category']));
 				$this->model->create($name);
 				header("Location:/admin/categories");
-			}
-			else
-			{
+			} else {
 				header("Location:/admin/categories/?error=empty");
-				echo 'вы не ввели название категории';
 			}
 		}
 	}
 
 	public function actionChangeCategory() 
 	{
-		if(isset($_POST['change'])) 
-		{
-			if(!empty($_POST['name']))
-			{
+		if(isset($_POST['change'])) {
+			if(!empty($_POST['name'])) {
 				$id = $_POST['id'];
 				$name = trim(strip_tags($_POST['name']));
 				$this->model->update($id, $name);
 				header("Location:/admin/categories");
-			}
-			else
-			{
+			} else {
 				header("Location:/admin/categories/?error=empty");
-				echo 'Вы не ввели название категории';
 			}
 		}
 	}

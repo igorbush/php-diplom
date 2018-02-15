@@ -1,4 +1,7 @@
 {% extends 'adminTemplate.php' %}
+{% block title %}
+	<title>Редактор вопроса</title>
+{% endblock %}
 {% block child %}
 			<form action="/admin/update-question" method="POST" class="uk-form uk-margin-top">
 				{% for value in questions %}

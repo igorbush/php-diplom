@@ -5,10 +5,20 @@ class Users
 
 	public $db = null;
 
+	/**
+	* Users constructor.
+	* @param object(PDO) $db
+	*/
+
 	public function __construct($db) 
 	{
 		$this->db = $db;
 	}
+
+	/**
+	* @return array
+	*/
+
 	public function getAll() 
 	{
 		$query = "SELECT id, login, password FROM admins";
@@ -16,6 +26,12 @@ class Users
 		$sth->execute(); 
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	/**
+	* @param string $login
+	* @param string $password
+	* @return boolean
+	*/
 
 	public function add($login, $password) 
 	{
@@ -26,6 +42,11 @@ class Users
 		return $sth->execute();
 	}
 
+	/**
+	* @param int $id
+	* @return boolean
+	*/
+
 	public function delete($id) 
 	{
 		$query = "DELETE FROM admins WHERE id = ?";
@@ -33,6 +54,12 @@ class Users
 		$sth->bindValue(1, $id, PDO::PARAM_INT);
 		return $sth->execute();
 	}
+
+	/**
+	* @param int $id
+	* @param string $password
+	* @return boolean
+	*/
 
 	public function update($id, $password) 
 	{
@@ -42,6 +69,12 @@ class Users
 		$sth->bindValue(2, $id, PDO::PARAM_INT);
 		return $sth->execute();
 	}
+
+	/**
+	* @param string $login
+	* @param string $password
+	* @return array
+	*/
 	
 	public function getAdmin($login, $password) 
 	{
@@ -53,6 +86,10 @@ class Users
 		return $sth->fetch(PDO::FETCH_ASSOC);
 	}
 	
+	/**
+	* @return array
+	*/
+
 	public function countQuestions() 
 	{
 		$query = "SELECT count(question) as questions, count(answer) as answers FROM questions";

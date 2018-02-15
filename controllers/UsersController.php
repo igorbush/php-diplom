@@ -14,8 +14,7 @@ class UsersController
 	public function actionUsers() 
 	{
 		$counts = $this->model->countQuestions();
-		foreach($counts as $count) 
-		{
+		foreach($counts as $count) {
 			$fullquestions = $count['questions'];
 			$answers = $count['answers'];
 		}
@@ -26,25 +25,18 @@ class UsersController
 
 	public function actionAddUser() 
 	{
-		if (isset($_POST['newadmin'])) 
-		{
-			if (!empty($_POST['login']) && !empty($_POST['password'])) 
-			{
+		if (isset($_POST['newadmin'])) {
+			if (empty($_POST['login']) && empty($_POST['password'])) {
+				header("Location:/admin/users/?error=empty");
+			} else {
 				$login = trim(strip_tags($_POST['login']));
 				$password = md5(trim(strip_tags($_POST['password'])));
-				if (!$this->model->getAdmin($login, $password))
-				{
+				if (!$this->model->getAdmin($login, $password)) {
 					$this->model->add($login, $password);
 					header("Location:/admin/users");
-				}
-				else
-				{
+				} else {
 					header("Location:/admin/users/?error=duble");
 				}
-			}
-			else
-			{
-				header("Location:/admin/users/?error=empty");
 			}
 		}
 	}
@@ -57,29 +49,21 @@ class UsersController
 
 	public function actionChangePassword() 
 	{
-		if (isset($_POST['changepassword'])) 
-		{
-			if (!empty($_POST['old']) && !empty($_POST['new'])) 
-			{
+		if (isset($_POST['changepassword'])) {
+			if (empty($_POST['old']) && empty($_POST['new'])) {
+				header("Location:/admin/users/?error=empty");
+			} else {
 				$id = $_POST['id'];
 				$login = trim(strip_tags($_POST['login']));
 				$oldpass = md5(trim(strip_tags($_POST['old'])));
 				$newpass = md5(trim(strip_tags($_POST['new'])));
-				if ($this->model->getAdmin($login, $oldpass)) 
-				{
+				if ($this->model->getAdmin($login, $oldpass)) {
 					$this->model->update($id, $newpass);
 					header("Location:/admin/users");
-				}
-				else 
-				{
+				} else {
 					header("Location:/admin/users/?error=wrongpass");
 					
 				}
-			}
-			else
-			{
-				header("Location:/admin/users/?error=empty");
-				
 			}
 		}	
 	}

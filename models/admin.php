@@ -5,10 +5,21 @@ class Admin
 
 	public $db = null;
 
+	/**
+	* Admin constructor.
+	* @param object(PDO) $db
+	*/
+
 	public function __construct($db) 
 	{
 		$this->db = $db;
 	}
+
+	/**
+	* @param string $login
+	* @param string $password
+	* @return array
+	*/
 
 	public function getAdmin($login, $password) 
 	{

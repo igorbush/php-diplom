@@ -1,4 +1,7 @@
 {% extends 'adminTemplate.php' %}
+{% block title %}
+	<title>Пользователи</title>
+{% endblock %}
 {% block child %}
 				<form action="/admin/new-admin" method="POST" class="uk-form uk-margin-top">
 					<div class="uk-inline">

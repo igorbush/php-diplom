@@ -4,18 +4,35 @@ class Main
 {
 
 	public $db = null;
+
+	/**
+	* Main constructor.
+	* @param object(PDO) $db
+	*/
+
 	public function __construct($db) 
 	{
 		$this->db = $db;
 	}
 
+	/**
+	* @return array
+	*/
+
 	public function getQuestions() 
 	{
-		$query = "SELECT questions.question, questions.answer, categories.category FROM questions INNER JOIN categories ON questions.category_id = categories.id WHERE visibility = 1 ORDER BY categories.category DESC";
+		$query = "SELECT questions.question, questions.answer, categories.category 
+		FROM questions INNER JOIN categories 
+		ON questions.category_id = categories.id WHERE visibility = 1 
+		ORDER BY categories.category DESC";
 		$sth = $this->db->prepare($query); 
 		$sth->execute(); 
 		return $result = $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	/**
+	* @return array
+	*/
 
 	public function getCategories() 
 	{
@@ -24,6 +41,14 @@ class Main
 		$sth->execute(); 
 		return $result = $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	/**
+	* @param string $question
+	* @param string $author
+	* @param string $email
+	* @param int $category_id
+	* @return boolean
+	*/
 
 	public function addQuestion($question, $author, $email, $category_id) 
 	{
@@ -36,9 +61,17 @@ class Main
 		return $sth->execute();
 	}
 
+	/**
+	* @param string $category
+	* @return array
+	*/
+
 	public function getQuestionsByCat($category) 
 	{
-		$query = "SELECT questions.question, questions.answer, categories.category FROM questions INNER JOIN categories ON questions.category_id = categories.id WHERE visibility = 1 and categories.category = ?";
+		$query = "SELECT questions.question, questions.answer, categories.category 
+		FROM questions INNER JOIN categories 
+		ON questions.category_id = categories.id 
+		WHERE visibility = 1 and categories.category = ?";
 		$sth = $this->db->prepare($query); 
 		$sth->bindValue(1, $category, PDO::PARAM_STR);
 		$sth->execute(); 

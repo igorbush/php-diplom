@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Авторизация</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="/styles/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 	<!-- UIkit CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.39/css/uikit.min.css" />
 
@@ -17,10 +18,14 @@
 	</div>
 	<div class="uk-container uk-background-default uk-padding-small">
 		<h3 class="uk-placeholder uk-text-center">Зайти в панель администратора</h3>
-		{% if checklogin %}
+		{% if error %}
 			<div class="uk-alert-primary uk-width-1-3 uk-margin-auto" uk-alert>
 		   		<a class="uk-alert-close" uk-close></a>
-		    	<p class="uk-padding-small">{{ errors }}</p>
+		   		{% if error == 'empty' %}
+		    	<p class="uk-padding-small">Не все поля введены</p>
+		    	{% elseif error == 'wrong' %}
+		    	<p class="uk-padding-small">Неверные данные</p>
+		    	{% endif %}
 			</div>
 		{% endif %}
 		<form action="/login/check" method="POST" class="uk-form uk-margin-auto uk-text-center">

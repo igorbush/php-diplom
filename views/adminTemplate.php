@@ -2,7 +2,9 @@
 <html lang="ru">
 <head>
 	<meta charset="UTF-8">
-	<title>Редактор вопроса</title>
+	{% block title %}
+	{% endblock %}
+	<link href="/styles/favicon.png" rel="shortcut icon" type="image/x-icon" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- UIkit CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.39/css/uikit.min.css" />

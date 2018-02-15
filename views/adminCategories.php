@@ -1,4 +1,7 @@
 {% extends 'adminTemplate.php' %}
+{% block title %}
+	<title>Категории</title>
+{% endblock %}
 {% block child %}
 				<form action="/admin/category-create" method="POST" class="uk-form uk-margin-top">
 					<div class="uk-inline">

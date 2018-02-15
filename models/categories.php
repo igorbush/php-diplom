@@ -4,18 +4,38 @@ class Categories
 {
 
 	public $db = null;
+
+	/**
+	* Categories constructor.
+	* @param object(PDO) $db
+	*/
+
 	public function __construct($db) 
 	{
 		$this->db = $db;
 	}
 
+	/**
+	* @return array
+	*/
+
 	public function getAll() 
 	{
-		$query = "SELECT categories.id, categories.category, count(questions.category_id) as count_questions, count(questions.answer) as count_answer, count(questions.visibility) as count_visible FROM `categories` LEFT JOIN `questions` ON questions.category_id = categories.id GROUP BY categories.category";
+		$query = "SELECT categories.id, categories.category, 
+		count(questions.category_id) as count_questions, 
+		count(questions.answer) as count_answer, 
+		count(questions.visibility) as count_visible 
+		FROM `categories` LEFT JOIN `questions` 
+		ON questions.category_id = categories.id GROUP BY categories.category";
 		$sth = $this->db->prepare($query);
 		$sth->execute(); 
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	/**
+	* @param int $id
+	* @return boolean
+	*/
 
 	public function delete($id) 
 	{
@@ -26,6 +46,11 @@ class Categories
 		return $sth->execute();
 	}
 
+	/**
+	* @param string $name
+	* @return boolean
+	*/
+
 	public function create($name) 
 	{
 		$query = "INSERT INTO categories (category) VALUES (?)";
@@ -33,6 +58,12 @@ class Categories
 		$sth->bindValue(1, $name, PDO::PARAM_STR);
 		return $sth->execute();
 	}
+
+	/**
+	* @param int $id
+	* @param string $name
+	* @return boolean
+	*/
 
 	public function update($id, $name) 
 	{
@@ -43,6 +74,10 @@ class Categories
 		return $sth->execute();
 	}
 
+	/**
+	* @return array
+	*/
+
 	public function getCategories() 
 	{
 		$query = "SELECT id, category FROM categories";
@@ -50,6 +85,10 @@ class Categories
 		$sth->execute(); 
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	/**
+	* @return array
+	*/
 	
 	public function countQuestions() 
 	{
