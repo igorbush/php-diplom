@@ -14,7 +14,7 @@
 	$config['mysql']['user'],
 	$config['mysql']['pass']
 	);
-	require_once('/app/Router.php');
+	require_once'app/Router.php';
 	$router = new Router();
 	$router->run($db, $twig);
 
