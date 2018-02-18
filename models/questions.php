@@ -24,7 +24,8 @@ class Questions
 		$query = "SELECT questions.id, questions.question, questions.author,
 		questions.email, questions.answer, questions.category_id,
 		questions.visibility, questions.date_added, categories.category 
-		FROM questions INNER JOIN categories ON questions.category_id = categories.id";
+		FROM questions INNER JOIN categories ON questions.category_id = categories.id
+		WHERE questions.blocked = 0";
 		$sth = $this->db->prepare($query);
 		$sth->execute(); 
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -41,7 +42,7 @@ class Questions
 		questions.email, questions.answer, questions.category_id,
 		questions.visibility, questions.date_added, categories.category 
 		FROM questions INNER JOIN categories ON questions.category_id = categories.id 
-		WHERE category_id = ?";
+		WHERE category_id = ? and questions.blocked = 0";
 		$sth = $this->db->prepare($query);
 		$sth->bindValue(1, $category_id, PDO::PARAM_INT);
 		$sth->execute(); 
@@ -58,7 +59,7 @@ class Questions
 		questions.email, questions.answer, questions.category_id,
 		questions.visibility, questions.date_added, categories.category 
 		FROM questions INNER JOIN categories ON questions.category_id = categories.id 
-		WHERE answer IS NULL";
+		WHERE answer IS NULL and questions.blocked = 0";
 		$sth = $this->db->prepare($query);
 		$sth->execute(); 
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -75,7 +76,7 @@ class Questions
 		questions.email, questions.answer, questions.category_id,
 		questions.visibility, questions.date_added, categories.category 
 		FROM questions INNER JOIN categories ON questions.category_id = categories.id 
-		WHERE answer IS NULL AND category_id = ?";
+		WHERE answer IS NULL AND category_id = ? and questions.blocked = 0";
 		$sth = $this->db->prepare($query);
 		$sth->bindValue(1, $category_id, PDO::PARAM_INT);
 		$sth->execute();
@@ -149,6 +150,19 @@ class Questions
 	}
 
 	/**
+	* @param int $id
+	* @return boolean
+	*/
+
+	public function unlockQuestion($id) 
+	{
+		$query = "UPDATE questions SET blocked = 0 WHERE id = ?";
+		$sth = $this->db->prepare($query);
+		$sth->bindValue(1, $id, PDO::PARAM_INT);
+		return $sth->execute();
+	}
+
+	/**
 	* @return array
 	*/
 
@@ -158,6 +172,39 @@ class Questions
 		$sth = $this->db->prepare($query);
 		$sth->execute();
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	/**
+	* @return array
+	*/
+
+	public function getAllBlocked() 
+	{
+		$query = "SELECT questions.id, questions.question, questions.author,
+		questions.email, questions.answer, questions.category_id,
+		questions.visibility, questions.date_added, categories.category 
+		FROM questions INNER JOIN categories ON questions.category_id = categories.id
+		WHERE questions.blocked = 1";
+		$sth = $this->db->prepare($query);
+		$sth->execute(); 
+		return $sth->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	/**
+	* @param string $str
+	* @return array
+	*/
+
+	public function findStopWord($str) 
+	{
+		$file = file(ROOT.'/stopsheets/stopwords.txt', FILE_SKIP_EMPTY_LINES);
+		foreach ($file as $word) {
+			$stopword = "~".trim($word)."~u";
+			if (preg_match_all($stopword, $str)) {
+				$array[]=$word;
+			}
+		}
+		return $array;
 	}
 
 	/**
@@ -195,6 +242,18 @@ class Questions
 			}
 		}
 		$file = fopen(ROOT.'/logs/logs.txt', 'a');
+		fwrite($file, $str . "\r\n");
+		return fclose($file);
+	}
+
+	/**
+	* @param string $str
+	* @return boolean
+	*/
+
+	public function addStopWord($str) 
+	{
+		$file = fopen(ROOT.'/stopsheets/stopwords.txt', 'a');
 		fwrite($file, $str . "\r\n");
 		return fclose($file);
 	}

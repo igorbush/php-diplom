@@ -62,6 +62,25 @@ class Main
 	}
 
 	/**
+	* @param string $question
+	* @param string $author
+	* @param string $email
+	* @param int $category_id
+	* @return boolean
+	*/
+
+	public function addBlockedQuestion($question, $author, $email, $category_id) 
+	{
+		$query = "INSERT INTO questions (question, date_added, author, email, category_id, blocked) VALUES (?, now(), ?, ?, ?, 1)";
+		$sth = $this->db->prepare($query); 
+		$sth->bindValue(1, $question, PDO::PARAM_STR);
+		$sth->bindValue(2, $author, PDO::PARAM_STR);
+		$sth->bindValue(3, $email, PDO::PARAM_STR);
+		$sth->bindValue(4, $category_id, PDO::PARAM_INT);
+		return $sth->execute();
+	}
+
+	/**
 	* @param string $category
 	* @return array
 	*/
@@ -76,6 +95,23 @@ class Main
 		$sth->bindValue(1, $category, PDO::PARAM_STR);
 		$sth->execute(); 
 		return $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	/**
+	* @param string $str
+	* @return array
+	*/
+
+	public function findStopWord($str) 
+	{
+		$file = file(ROOT.'/stopsheets/stopwords.txt', FILE_SKIP_EMPTY_LINES);
+		foreach ($file as $word) {
+			$stopword = "~".trim($word)."~u";
+			if (preg_match_all($stopword, $str)) {
+				$array[]=$word;
+			}
+		}
+		return $array;
 	}
 
 }

@@ -29,7 +29,9 @@
 					<li class="uk-margin-bottom"><a href="/admin/users"><span uk-icon="icon: user"></span> АДМИНИСТРАТОРЫ</a></li>
 					<li class="uk-margin-bottom"><a href="/admin/categories"><span uk-icon="icon: tag"></span> КАТЕГОРИИ</a></li>
 					<li class="uk-margin-bottom"><a href="/main"><span uk-icon="icon: home"></span> НА ГЛАВНУЮ</a></li>
+					<li class="uk-margin-bottom"><a href="/admin/blocked"><span uk-icon="icon: lock"></span> СТОП-ЛИСТ</a></li>
 					<li class="uk-margin-bottom"><a href="/logout">Выйти из  пользователя</a></li>
+					<li class="uk-margin-bottom"><a download href="/logs/logs.txt">Скачать логи</a></li>
 				</ul>
 			</div>
 		<div class="uk-width-5-6@s">

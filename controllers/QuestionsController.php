@@ -75,5 +75,48 @@ class QuestionsController
 		}
 	}
 
+	public function actionGetBlockedQuestions() 
+	{
+		$counts = $this->model->countQuestions();
+		foreach($counts as $count) {
+			$fullquestions = $count['questions'];
+			$answers = $count['answers'];
+		}
+		$questions = $this->model->getAllBlocked();
+		foreach ($questions as $question) {
+			$find = $this->model->findStopWord($question['question']);
+			$question["blockwords"] = $find;
+			$array[] = $question;
+		}
+
+		$template = $this->twig->loadTemplate('adminBlocked.php');
+		echo $template->render(['questions'=>$array, 'session_user'=>$_SESSION['user'], 'fullquestions'=>$fullquestions, 'answers'=>$answers, 'error'=>$_GET['error']]);
+	}
+
+	public function actionDeleteBlockedQuestion($id) 
+	{
+		$this->model->delete($id);
+		header("Location:/admin/blocked");
+	}
+
+	public function actionUnlockBlockedQuestion($id) 
+	{
+		$this->model->unlockQuestion($id);
+		header("Location:/admin/blocked");
+	}
+
+	public function actionAddStopWord() 
+	{
+		if(isset($_POST['add'])) {
+			if(empty($_POST['stop_word'])) {
+				header("Location:/admin/blocked/?error=empty");
+			} else {
+			$stopword = trim($_POST['stop_word']);
+			$this->model->addStopWord($stopword);
+			header("Location:/admin/blocked");
+			}
+		} 
+	}
+
 }
 ?>
