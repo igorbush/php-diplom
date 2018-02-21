@@ -14,6 +14,25 @@
 	$config['mysql']['user'],
 	$config['mysql']['pass']
 	);
+	
+	define('TOKEN', '345048729:AAFDtYHaor5E-5NxcL8Kd1BpAeu7Gujex60');
+	define('BASE_URL', 'https://api.telegram.org/bot' . TOKEN . '/');
+	$update = json_decode(file_get_contents('php://input'), true);
+
+	function sendRequest($method, $params = [])
+	{
+		if (!empty($params)) {
+			$url = BASE_URL . $method . '?' . http_build_query($params);
+		} else {
+			$url = BASE_URL . $method;
+		}
+		return json_decode(file_get_contents($url), true);
+	}
+	$time = date('H:m:s');
+	$chat_id = $update['message']['chat']['id'];
+	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $time]);
+
+	
 	require_once'app/Router.php';
 	$router = new Router();
 	$router->run($db, $twig);
