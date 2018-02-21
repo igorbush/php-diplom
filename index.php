@@ -30,8 +30,12 @@
 	}
 	$time = date('H:m:s');
 	$chat_id = $update['message']['chat']['id'];
-	sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $time]);
-
+	$mesage = $update['message']['text'];
+	if ($mesage == 'start') {
+		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => 'Спросите у меня время']);
+	} else {
+		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $time]);
+	}
 	
 	require_once'app/Router.php';
 	$router = new Router();
