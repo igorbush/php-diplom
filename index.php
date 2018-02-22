@@ -31,14 +31,16 @@
 	$chat_id = $update['message']['chat']['id'];
 	$mesage = $update['message']['text'];
 	$author = $update['message']['from']['first_name'] .' '. $update['message']['from']['last_name'];
+	$email = $update['message']['from']['id'];
 	if ($mesage == '/start') {
 		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => 'Задайте вопрос по теме веб-разработки']);
 	} else {
-		$query = "INSERT INTO questions (question, date_added, author, chat_id) VALUES (?, now(), ?, ?)";
+		$query = "INSERT INTO questions (question, date_added, author, email, chat_id, category_id) VALUES (?, now(), ?, ?, ?, 11)";
 		$sth = $db->prepare($query); 
 		$sth->bindValue(1, $mesage, PDO::PARAM_STR);
 		$sth->bindValue(2, $author, PDO::PARAM_STR);
-		$sth->bindValue(3, $chat_id, PDO::PARAM_INT);
+		$sth->bindValue(3, $email, PDO::PARAM_STR);
+		$sth->bindValue(4, $chat_id, PDO::PARAM_INT);
 		$sth->execute();
 		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => 'Спасибо за обращение! Мы ответим Вам в ближайшее время.']);
 	}
