@@ -28,13 +28,19 @@
 		}
 		return json_decode(file_get_contents($url), true);
 	}
-	$time = date('H:m:s');
 	$chat_id = $update['message']['chat']['id'];
 	$mesage = $update['message']['text'];
+	$author = $update['message']['from']['first_name'] .' '. $update['message']['from']['last_name'];
 	if ($mesage == '/start') {
-		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => 'Спросите у меня время']);
+		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => 'Задайте вопрос по теме веб-разработки']);
 	} else {
-		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => $time]);
+		$query = "INSERT INTO questions (question, date_added, author, chat_id) VALUES (?, now(), ?, ?)";
+		$sth = $db->prepare($query); 
+		$sth->bindValue(1, $mesage, PDO::PARAM_STR);
+		$sth->bindValue(2, $author, PDO::PARAM_STR);
+		$sth->bindValue(3, $chat_id, PDO::PARAM_INT);
+		$sth->execute();
+		sendRequest('sendMessage', ['chat_id' => $chat_id, 'text' => 'Спасибо за обращение! Мы ответим Вам в ближайшее время.']);
 	}
 	
 	require_once'app/Router.php';
