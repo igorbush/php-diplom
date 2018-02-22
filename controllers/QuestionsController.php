@@ -42,6 +42,9 @@ class QuestionsController
 	public function actionVisibleQuestion($id) 
 	{
 		$this->model->getVisible($id);
+		$question = $this->model->getForTelegram($id);
+		$answer_for_telegram = "Мы подготовили ответ на Ваш вопрос \r\n" . $question['question'] . " \r\n \r\n" . $question['answer'];
+		sendRequest('sendMessage', ['chat_id' => $question['chat_id'], 'text' => $answer_for_telegram]);
 		$action = 'visible';
 		$this->model->writeLogs($id, $action, $_SESSION['user']);
 		header("Location:/admin/questions");

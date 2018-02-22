@@ -42,7 +42,7 @@ class QuestionController
 			elseif($_POST['visibility'] == '1' && !empty($_POST['answer'])) {
 				$upd = $this->model->updatePublic($id, $question, $author, $email, $answer);
 				$chat_id = $this->model->getForTelegram($id);
-				$answer_for_telegram = "Мы подготовили ответ на Ваш вопрос " . $question . ": \r\n" . $answer;
+				$answer_for_telegram = "Мы подготовили ответ на Ваш вопрос \r\n" . $question . " \r\n \r\n" . $answer;
 				sendRequest('sendMessage', ['chat_id' => $chat_id['chat_id'], 'text' => $answer_for_telegram]);
 				$action = 'update_and_visible';
 				$this->model->writeLogs($id, $action, $_SESSION['user']);
