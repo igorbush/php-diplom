@@ -89,6 +89,20 @@ class Question
 
 	/**
 	* @param int $id
+	* @return array
+	*/
+
+	public function getForTelegram($id) 
+	{
+		$query = "SELECT chat_id FROM questions WHERE id = ?";
+		$sth = $this->db->prepare($query);
+		$sth->bindValue(1, $id, PDO::PARAM_INT);
+		$sth->execute();
+		return $sth->fetch(PDO::FETCH_ASSOC);
+	}
+
+	/**
+	* @param int $id
 	* @param string $action
 	* @param string $session_user
 	* @return boolean
